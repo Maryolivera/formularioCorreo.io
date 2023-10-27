@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Agrega estilos para la clase "error" */
+        .error {
+           border: 1px solid red;
+       }
+    </style>*/
+</head>
+<body>
+    <div class="formulario">
+        <form onsubmit="return validar()">
+
+            <label for="correo">Correo:</label>
+            <input type="text" id="correo" name="correo"> 
+
+            <label for="contraseña">Contraseña:</label>
+            <input type="password" id="contraseña" name="contraseña">
+
+            <label for="repContraseña">Repetir Contraseña:</label>
+            <input type="password" id="repContraseña" name="repContraseña">
+
+            <input type="submit" value="Enviar">
+        </form>
+
+        <ul id="listaErrores"></ul>
+        <ol id="listaMensajes"></ol>
+    </div>
+    <script>
+        function validar() {
+            let sinError = true;
+            let correo = document.getElementById("correo");
+            let contraseña = document.getElementById("contraseña");
+            let repContraseña = document.getElementById("repContraseña");
+            let er = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+    
+            let listaErrores = document.getElementById("listaErrores");
+            let listaMensajes = document.getElementById("listaMensajes");
+    
+            // Limpia la lista de errores
+            listaErrores.innerHTML = "";
+    
+            // Elimina la clase "error" de los elementos antes de realizar nuevas validaciones
+            correo.classList.remove("error");
+            contraseña.classList.remove("error");
+            repContraseña.classList.remove("error");
+            
+            if (!er.test(correo.value)) {
+                console.log("Correo inválido");
+                let item = document.createElement("li");
+                listaErrores.appendChild(item);
+                item.innerHTML = "Correo inválido";
+                correo.classList.add("error"); 
+                sinError = false;
+            }
+            
+            if (contraseña.value.trim() === "" || contraseña.value.length < 8) {
+                console.log("Contraseña inválida");
+                let item = document.createElement("li");
+                listaErrores.appendChild(item);
+                item.innerHTML = "Contraseña inválida";
+                contraseña.classList.add("error"); 
+                sinError = false;
+            }
+    
+            if (contraseña.value !== repContraseña.value) {
+                console.log("Las contraseñas no coinciden");
+                let item = document.createElement("li");
+                listaErrores.appendChild(item);
+                item.innerHTML = "Las contraseñas no coinciden";
+                contraseña.classList.add("error"); 
+                repContraseña.classList.add("error"); 
+                sinError = false;
+            }
+    
+            if (sinError) {
+                let item = document.createElement("li");
+                listaMensajes.appendChild(item);
+                item.innerHTML = "Correo: " + correo.value;
+                correo.value = "";
+                contraseña.value = "";
+                repContraseña.value = "";
+    
+                correo.focus();
+            }
+    
+            return false;
+        }
+    </script>
+</body>
+</html>
